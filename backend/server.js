@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 // Use Cloudflare DNS for MongoDB Atlas DNS lookups
 dns.setServers(["1.1.1.1"]);
 
+const patientRoutes = require("./routes/patientRoutes");
+
 const app = express();
 
 const PORT = process.env.PORT || 5000;
@@ -14,6 +16,11 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware for JSON requests
 app.use(express.json());
+
+// Patient Management Routes (local development only)
+if (process.env.NODE_ENV !== "production") {
+  app.use("/api/patients", patientRoutes);
+}
 
 // Home route
 app.get("/", (req, res) => {
